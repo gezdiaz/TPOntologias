@@ -15,9 +15,10 @@ repositories {
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
     compile "com.complexible.stardog:server:6.1.2@pom"
-    compile "com.complexible.stardog.cache:stardog-cache-core:6.1.2"
+    //compile "com.complexible.stardog.cache:stardog-cache-core:6.1.2"
     compile "com.stardog.stark.query:stardog-stark-query-api:6.1.2"
     compile "com.stardog.stark.io:stardog-stark-io-api:6.1.2"
     compile "com.stardog.stark.query.io:stardog-stark-query-io:6.1.2"
     compile "com.complexible.stardog:client-http:6.1.2@pom"
+    compile "com.complexible.stardog:client-http:6.1.2"
 }
