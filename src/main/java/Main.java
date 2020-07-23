@@ -4,10 +4,19 @@ import com.stardog.stark.query.SelectQueryResult;
 import com.stardog.stark.query.io.QueryResultWriter;
 import com.stardog.stark.query.io.QueryResultWriters;
 
+import javax.swing.JFrame;
+
 public class Main {
 
     public static void main(String[] args) {
-        createConnection();
+//        createConnection();
+        JFrame ventana = new JFrame();
+        ventana.setContentPane(new MainPanel());
+        ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        ventana.pack();
+        ventana.setLocationRelativeTo(null);
+        ventana.setVisible(true);
+
     }
 
     //Crea una conexion a la base de datos TPOntologias en el servidor localhost:5820
