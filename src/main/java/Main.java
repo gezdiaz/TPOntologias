@@ -11,11 +11,12 @@ public class Main {
     public static void main(String[] args) {
 //        createConnection();
         JFrame ventana = new JFrame();
-        ventana.setContentPane(new MainPanel());
+        ventana.setContentPane(new MainPanel(ventana));
         ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         ventana.pack();
         ventana.setLocationRelativeTo(null);
         ventana.setVisible(true);
+//        createConnection();
 
     }
 
@@ -26,10 +27,16 @@ public class Main {
                 .credentials("admin", "admin")
                 .connect()) {
 
-            System.out.println(aConn.name());
+            System.out.println("Conexión: "+aConn.name());
 
             //Hacer una Query simple
-            SelectQuery query = aConn.select("select * {?a a TPADMR:Alumno}");
+            SelectQuery query = aConn.select("select ?nombre ?legajo ?a\n" +
+                    "where {\n" +
+                    "  ?a a TPADMR:Alumno.\n" +
+                    "  ?a TPADMR:tieneNombre ?nombre.\n" +
+                    "  ?a TPADMR:tieneLegajo ?legajo.\n" +
+                    "  ?a a TPADMR:AlumnoBecado\n" +
+                    "  }");
             SelectQueryResult selectQueryResult = query.execute();
             QueryResultWriters.write(selectQueryResult, System.out, TextTableQueryResultWriter.FORMAT);
 

@@ -2,6 +2,9 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -16,12 +19,14 @@ public class MainPanel extends JPanel {
     JLabel lblMaterias, lblPromedio, lblTitulo;
     JTextField txtMaterias, txtPromedio;
     JButton btnAceptar, btnCancelar;
+    JFrame ventana;
 
 
-    public MainPanel(){
+    public MainPanel(JFrame ventana){
 
         setLayout(new GridBagLayout());
-        GridBagConstraints cons= new GridBagConstraints();
+        GridBagConstraints cons = new GridBagConstraints();
+        this.ventana = ventana;
 
         btnAceptar = new JButton("Aceptar");
         btnCancelar = new JButton("Cancelar");
@@ -92,6 +97,18 @@ public class MainPanel extends JPanel {
         cons.anchor = GridBagConstraints.CENTER;
         cons.fill = GridBagConstraints.HORIZONTAL;
         add(btnAceptar, cons);
+        btnAceptar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //TODO hacer la consulta
+                MainPanel.this.ventana.setContentPane(new PanelResultado(MainPanel.this.ventana, new ArrayList<Object>()));
+                MainPanel.this.ventana.revalidate();
+                MainPanel.this.ventana.repaint();
+                MainPanel.this.ventana.pack();
+                MainPanel.this.ventana.setLocationRelativeTo(null);
+                MainPanel.this.ventana.requestFocus();
+            }
+        });
 
         cons.gridx = 1;
         cons.gridy = 4;
