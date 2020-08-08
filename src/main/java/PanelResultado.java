@@ -1,3 +1,4 @@
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -10,6 +11,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 public class PanelResultado extends JPanel {
@@ -19,7 +21,7 @@ public class PanelResultado extends JPanel {
     TablaResultadoModel tablaResultadoModel;
     JButton btnVolver;
 
-    public PanelResultado(JFrame ventana, ArrayList<Object> resultados){
+    public PanelResultado(JFrame ventana, ArrayList<Alumno> resultados){
 
         setLayout(new GridBagLayout());
         GridBagConstraints cons = new GridBagConstraints();
@@ -43,7 +45,9 @@ public class PanelResultado extends JPanel {
         cons.gridwidth = 2;
         cons.insets = new Insets(40, 20, 40, 20);
         cons.anchor = GridBagConstraints.CENTER;
-        add(tablaResultado, cons);
+        JScrollPane scrollPane = new JScrollPane(tablaResultado);
+        scrollPane.setPreferredSize(new Dimension(800, 200));
+        add(scrollPane, cons);
 
         btnVolver = new JButton("Volver");
         cons.gridx = 0;
@@ -56,6 +60,7 @@ public class PanelResultado extends JPanel {
         btnVolver.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                System.out.println("Tamaño de la tabla: "+tablaResultado.getSize().toString());
                 PanelResultado.this.ventana.setContentPane(new MainPanel(PanelResultado.this.ventana));
                 PanelResultado.this.ventana.revalidate();
                 PanelResultado.this.ventana.repaint();

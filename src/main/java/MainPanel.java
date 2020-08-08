@@ -1,6 +1,5 @@
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -101,7 +100,12 @@ public class MainPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //TODO hacer la consulta
-                MainPanel.this.ventana.setContentPane(new PanelResultado(MainPanel.this.ventana, new ArrayList<Object>()));
+                ArrayList<Alumno> resultadosPrueba = new ArrayList<>();
+                for(int i=0; i<50; i++){
+                    Alumno a = new Alumno(23330+i, 20+i, "Alumno "+String.valueOf(i), "Sistemas", 20.65*(5.6/i)+i, 10+2*i, 20+3*i);
+                    resultadosPrueba.add(a);
+                }
+                MainPanel.this.ventana.setContentPane(new PanelResultado(MainPanel.this.ventana, resultadosPrueba));
                 MainPanel.this.ventana.revalidate();
                 MainPanel.this.ventana.repaint();
                 MainPanel.this.ventana.pack();
