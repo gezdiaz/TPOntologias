@@ -63,10 +63,11 @@ public class Main {
 
             StringBuffer qStrBf = new StringBuffer()
                     .append("PREFIX TPADMR: <http://www.semanticweb.org/gasto/ontologies/2020/4/TPADMR#>")
-                    .append("select ?nom ?leg ?pond ?edad ?carr ?cmat ?mat WHERE")
+                    .append("select ?nom ?leg ?pond ?edad ?carr ?cmat ?mat ?prom WHERE")
                     .append("{")
                     .append(" ?a a TPADMR:Alumno.")
                     .append(" ?a TPADMR:aproboMateria ?mat.")
+                    .append(" ?a TPADMR:tienePromedioGeneral ?prom")
                     .append(" ?a TPADMR:tieneNombre ?nom.")
                     .append(" ?a TPADMR:tieneLegajo ?leg.")
                     .append(" ?a TPADMR:tieneEdad ?edad.")
@@ -108,8 +109,9 @@ public class Main {
                     alumno.setLegajo(Integer.parseInt(bindingSet.get("leg").toString().substring(1, bindingSet.get("leg").toString().lastIndexOf("\""))));
                     alumno.setNombre(bindingSet.get("nom").toString().substring(1,bindingSet.get("nom").toString().lastIndexOf("\"")));
                     alumno.setEdad(Integer.parseInt(bindingSet.get("edad").toString().substring(1,bindingSet.get("edad").toString().lastIndexOf("\""))));
-                    alumno.setTotalMaterias(Integer.parseInt(bindingSet.get("cmat").toString().substring(1,bindingSet.get("cmat").toString().lastIndexOf("."))));
+                    alumno.setTotalMaterias(Integer.parseInt(bindingSet.get("cmat").toString().substring(1,bindingSet.get("cmat").toString().lastIndexOf("\""))));
                     alumno.setUltimasMaterias(alumno.getUltimasMaterias()+1);
+                    alumno.setPromedio(Float.parseFloat(bindingSet.get("prom").toString().substring(1,bindingSet.get("prom").toString().lastIndexOf("\""))));
                     alumno.setPonderacion(Float.parseFloat(bindingSet.get("pond").toString().substring(1,bindingSet.get("pond").toString().lastIndexOf("\""))));
                     alumno.setCarrera(bindingSet.get("carr").toString().substring(bindingSet.get("carr").toString().indexOf("#")+1));
                     alumnos.add(alumno);
