@@ -14,6 +14,7 @@ import org.apache.jena.rdf.model.Model;
 import org.apache.jena.sparql.core.Var;
 import org.apache.jena.sparql.engine.binding.Binding;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -52,9 +53,10 @@ public class Main {
 
             StringBuffer qStrBf = new StringBuffer()
                     .append("PREFIX TPADMR: <http://www.semanticweb.org/gasto/ontologies/2020/4/TPADMR#>")
-                    .append("select ?nom ?leg ?pond ?edad ?carr ?cmat WHERE")
+                    .append("select ?nom ?leg ?pond ?edad ?carr ?cmat ?mat WHERE")
                     .append("{")
                     .append(" ?a a TPADMR:Alumno.")
+                    .append(" ?a TPADMR:aproboMateria ?mat.")
                     .append(" ?a TPADMR:tieneNombre ?nom.")
                     .append(" ?a TPADMR:tieneLegajo ?leg.")
                     .append(" ?a TPADMR:tieneEdad ?edad.")
@@ -75,15 +77,34 @@ public class Main {
                 System.out.println("Sale del while interno");
             }*/
 
+            List<Alumno> alumnos = new ArrayList<Alumno>();
             SelectQuery selectQuery = aConn.select(qStrBf.toString());
             SelectQueryResult selectQueryResult = selectQuery.execute();
             while(selectQueryResult.hasNext()){
                 BindingSet bindingSet = selectQueryResult.next();
-                Set<String> strings = bindingSet.variables();
-                for (String s : strings){
-                    System.out.println(s+": "+bindingSet.get(s));
+                boolean bandera = false;
+                if(!alumnos.isEmpty()){
+                    for(Alumno a : alumnos){
+                        Integer legajo = Integer.parseInt(bindingSet.get("leg").toString().substring(1, bindingSet.get("leg").toString().lastIndexOf("\"")));
+                        if (a.getLegajo() == legajo){
+                            bandera=true;
+                            a.setUltimasMaterias(a.getUltimasMaterias()+1);
+                            break;
+                        }
+                    }
                 }
-                System.out.println("Salgo del For");
+                if(!bandera){
+                    Alumno alumno = new Alumno();
+                    alumno.setLegajo(Integer.parseInt(bindingSet.get("leg").toString().substring(1, bindingSet.get("leg").toString().lastIndexOf("\""))));
+                    alumno.setNombre(bindingSet.get("nom").toString().substring(1,bindingSet.get("nom").toString().lastIndexOf("\"")));
+                    alumno.setEdad(Integer.parseInt(bindingSet.get("edad").toString().substring(1,bindingSet.get("edad").toString().lastIndexOf("\""))));
+                    alumno.setTotalMaterias(Integer.parseInt(bindingSet.get("cmat").toString().substring(1,bindingSet.get("cmat").toString().lastIndexOf("."))));
+                    alumno.setUltimasMaterias(alumno.getUltimasMaterias()+1);
+                    alumno.setPonderacion(Float.parseFloat(bindingSet.get("pond").toString().substring(1,bindingSet.get("pond").toString().lastIndexOf("\""))));
+                    alumno.setCarrera(bindingSet.get("carr").toString().substring(bindingSet.get("carr").toString().indexOf("#")+1));
+                    alumnos.add(alumno);
+                }
+
             }
 
 
