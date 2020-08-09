@@ -39,13 +39,13 @@ public class Main {
     }
 
     //Crea una conexion a la base de datos TPOntologias en el servidor localhost:5820
-    public static List<Alumno> createConnection() {
+    public static List<Alumno> getListaAlumnos() {
         try (final Connection aConn = ConnectionConfiguration.to("TPOntologias").server("http://localhost:5820")
-                .reasoning(true)
+                .reasoning(false)
                 .credentials("admin", "admin")
                 .connect()) {
 
-            System.out.println("Conexión: "+aConn.name());
+            System.out.println("Conexión: " + aConn.name());
 
             //Hacer una Query simple
             /*SelectQuery query = aConn.select("select * {?a a TPADMR:Alumno}");
@@ -66,10 +66,10 @@ public class Main {
 
             StringBuffer qStrBf = new StringBuffer()
                     .append("PREFIX TPADMR: <http://www.semanticweb.org/gasto/ontologies/2020/4/TPADMR#>")
-                    .append("select ?nom ?leg ?pond ?edad ?carr ?cmat ?mat ?prom WHERE")
+                    .append("select ?nom ?leg ?pond ?edad ?carr ?cmat ?cmatant ?prom WHERE")
                     .append("{")
                     .append(" ?a a TPADMR:Alumno.")
-                    .append(" ?a TPADMR:aproboMateria ?mat.")
+                    .append(" ?a TPADMR:tieneAprobadasAnioAnterior ?cmatant.")
                     .append(" ?a TPADMR:tienePromedioGeneral ?prom.")
                     .append(" ?a TPADMR:tieneNombre ?nom.")
                     .append(" ?a TPADMR:tieneLegajo ?leg.")
@@ -93,27 +93,15 @@ public class Main {
 
             List<Alumno> alumnos = new ArrayList<Alumno>();
             SelectQuery selectQuery = aConn.select(qStrBf.toString());
-            System.out.println("Query: "+qStrBf.toString());
+            System.out.println("Query: " + qStrBf.toString());
             System.out.println("Se ejecuta la query");
             SelectQueryResult selectQueryResult = selectQuery.execute();
             System.out.println("Se termino de ejecutar la query");
             Pattern pattern = Pattern.compile("\"(.*?)\"");
-            while(selectQueryResult.hasNext()){
+            while (selectQueryResult.hasNext()) {
                 System.out.println("Inicio del While");
                 BindingSet bindingSet = selectQueryResult.next();
-                boolean bandera = false;
-                if(!alumnos.isEmpty()){
-                    for(Alumno a : alumnos){
-                        Integer legajo = Integer.parseInt(bindingSet.get("leg").toString().substring(1, bindingSet.get("leg").toString().lastIndexOf("\"")));
-                        if (a.getLegajo() == legajo){
-                            bandera=true;
-                            a.setUltimasMaterias(a.getUltimasMaterias()+1);
-                            break;
-                        }
-                    }
-                }
-                if(!bandera){
-                    Alumno alumno = new Alumno();
+                Alumno alumno = new Alumno();
 //                    alumno.setLegajo(Integer.parseInt(bindingSet.get("leg").toString().substring(1, bindingSet.get("leg").toString().lastIndexOf("\""))));
 //                    alumno.setNombre(bindingSet.get("nom").toString().substring(1,bindingSet.get("nom").toString().lastIndexOf("\"")));
 //                    alumno.setEdad(Integer.parseInt(bindingSet.get("edad").toString().substring(1,bindingSet.get("edad").toString().lastIndexOf("\""))));
@@ -121,23 +109,23 @@ public class Main {
 //                    alumno.setUltimasMaterias(alumno.getUltimasMaterias()+1);
 //                    alumno.setPromedio(Float.parseFloat(bindingSet.get("prom").toString().substring(1,bindingSet.get("prom").toString().lastIndexOf("\""))));
 //                    alumno.setPonderacion(Float.parseFloat(bindingSet.get("pond").toString().substring(1,bindingSet.get("pond").toString().lastIndexOf("\""))));
-//                    alumno.setCarrera(bindingSet.get("carr").toString().substring(bindingSet.get("carr").toString().indexOf("#")+1));
-                    alumno.setLegajo(Integer.parseInt(pattern.matcher(bindingSet.get("leg").toString()).group(1)));
-                    alumno.setNombre(pattern.matcher(bindingSet.get("nom").toString()).group(1));
-                    alumno.setEdad(Integer.parseInt(pattern.matcher(bindingSet.get("edad").toString()).group(1)));
-                    alumno.setTotalMaterias(Integer.parseInt(pattern.matcher(bindingSet.get("cmat").toString()).group(1)));
-                    alumno.setUltimasMaterias(alumno.getUltimasMaterias()+1);
-                    alumno.setPromedio(Float.parseFloat(pattern.matcher(bindingSet.get("prom").toString()).group(1)));
-                    alumno.setPonderacion(Float.parseFloat(pattern.matcher(bindingSet.get("pond").toString()).group(1)));
-                    alumno.setCarrera(pattern.matcher(bindingSet.get("carr").toString()).group(1));
-                    alumnos.add(alumno);
-                    System.out.println("Creado el alumno: "+alumno.toString());
-                }
+                alumno.setCarrera(bindingSet.get("carr").toString().substring(bindingSet.get("carr").toString().indexOf("#")+1));
+                alumno.setLegajo(Integer.parseInt(pattern.matcher(bindingSet.get("leg").toString()).group(1)));
+                alumno.setNombre(pattern.matcher(bindingSet.get("nom").toString()).group(1));
+                alumno.setEdad(Integer.parseInt(pattern.matcher(bindingSet.get("edad").toString()).group(1)));
+                alumno.setTotalMaterias(Integer.parseInt(pattern.matcher(bindingSet.get("cmat").toString()).group(1)));
+                alumno.setUltimasMaterias(Integer.parseInt(pattern.matcher(bindingSet.get("cmatant").toString()).group(1)));
+                alumno.setPromedio(Float.parseFloat(pattern.matcher(bindingSet.get("prom").toString()).group(1)));
+                alumno.setPonderacion(Float.parseFloat(pattern.matcher(bindingSet.get("pond").toString()).group(1)));
+//                alumno.setCarrera(pattern.matcher(bindingSet.get("carr").toString()).group(1));
+                alumnos.add(alumno);
+                System.out.println("Creado el alumno: " + alumno.toString());
+
 
             }
             return alumnos;
 
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return new ArrayList<>();
         }
