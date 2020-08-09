@@ -33,6 +33,7 @@ public class Main {
         ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         ventana.pack();
         ventana.setLocationRelativeTo(null);
+        ventana.setResizable(false);
         ventana.setVisible(true);
 //        createConnection();
 

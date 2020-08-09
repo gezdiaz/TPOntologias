@@ -1,3 +1,5 @@
+import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -35,17 +37,21 @@ public class MainPanel extends JPanel {
         cons.gridy = 0;
         cons.gridheight = 1;
         cons.gridwidth = 2;
-        cons.insets = new Insets(40, 20, 40, 20);
+        cons.insets = new Insets(10, 20, 20, 20);
         cons.anchor = GridBagConstraints.CENTER;
+        lblTitulo.setFont(new Font(lblTitulo.getFont().getName(), lblTitulo.getFont().getStyle(), 50));
         add(lblTitulo, cons);
 
-        lblDescripcion = new JTextArea("Para poder evaluar las solicitudes de los postulantes requerimos que se ingresen los criterios con los cuales se determinarán aquellos habilitados a conseguir la beca.");
+        lblDescripcion = new JTextArea("Para poder evaluar las solicitudes de los postulantes\nrequerimos que se ingresen los criterios con los cuales se\ndeterminar\u00e1n aquellos habilitados a conseguir la beca.");
         cons.gridx = 0;
         cons.gridy = 1;
         cons.gridheight = 1;
         cons.gridwidth = 2;
-        cons.insets = new Insets(40, 20, 40, 20);
+        cons.insets = new Insets(10, 20, 10, 20);
         cons.anchor = GridBagConstraints.CENTER;
+        lblDescripcion.setPreferredSize(new Dimension(350, 50));
+        lblDescripcion.setRows(3);
+        lblDescripcion.setEditable(false);
         add(lblDescripcion, cons);
 
         lblMaterias = new JLabel("Cantidad minima de materias aprobadas");
@@ -53,8 +59,8 @@ public class MainPanel extends JPanel {
         cons.gridy = 2;
         cons.gridheight = 1;
         cons.gridwidth = 1;
-        cons.insets = new Insets(40, 20, 40, 20);
-        cons.anchor = GridBagConstraints.CENTER;
+        cons.insets = new Insets(10, 20, 10, 5);
+        cons.anchor = GridBagConstraints.WEST;
         add(lblMaterias, cons);
 
         lblPromedio= new JLabel("Promedio minimo");
@@ -62,8 +68,8 @@ public class MainPanel extends JPanel {
         cons.gridy = 3;
         cons.gridheight = 1;
         cons.gridwidth = 1;
-        cons.insets = new Insets(40, 20, 40, 20);
-        cons.anchor = GridBagConstraints.CENTER;
+        cons.insets = new Insets(10, 20, 10, 5);
+        cons.anchor = GridBagConstraints.WEST;
         add(lblPromedio, cons);
 
         txtMaterias = new JTextField();
@@ -71,10 +77,11 @@ public class MainPanel extends JPanel {
         cons.gridy = 2;
         cons.gridheight = 1;
         cons.gridwidth = 1;
-        cons.insets = new Insets(40, 20, 40, 20);
+        cons.insets = new Insets(5, 20, 10, 20);
         cons.anchor = GridBagConstraints.CENTER;
-        cons.fill = GridBagConstraints.HORIZONTAL;
-        txtMaterias.setPreferredSize(btnAceptar.getPreferredSize());
+        cons.fill = GridBagConstraints.NONE;
+        txtMaterias.setPreferredSize(btnCancelar.getPreferredSize());
+        txtMaterias.setText("2");
         add(txtMaterias, cons);
 
         txtPromedio = new JTextField();
@@ -82,19 +89,21 @@ public class MainPanel extends JPanel {
         cons.gridy = 3;
         cons.gridheight = 1;
         cons.gridwidth = 1;
-        cons.insets = new Insets(40, 20, 40, 20);
+        cons.insets = new Insets(5, 20, 10, 20);
         cons.anchor = GridBagConstraints.CENTER;
-        cons.fill = GridBagConstraints.HORIZONTAL;
-        txtPromedio.setPreferredSize(btnAceptar.getPreferredSize());
+        cons.fill = GridBagConstraints.NONE;
+        txtPromedio.setPreferredSize(btnCancelar.getPreferredSize());
+        System.out.println("Prefered size de txtPromedio: "+txtPromedio.getPreferredSize().toString());
+        txtPromedio.setText("5");
         add(txtPromedio, cons);
 
         cons.gridx = 0;
         cons.gridy = 4;
         cons.gridheight = 1;
         cons.gridwidth = 1;
-        cons.insets = new Insets(40, 20, 40, 20);
+        cons.insets = new Insets(10, 20, 10, 20);
         cons.anchor = GridBagConstraints.CENTER;
-        cons.fill = GridBagConstraints.HORIZONTAL;
+        cons.fill = GridBagConstraints.NONE;
         add(btnAceptar, cons);
         btnAceptar.addActionListener(new ActionListener() {
             @Override
@@ -145,9 +154,9 @@ public class MainPanel extends JPanel {
         cons.gridy = 4;
         cons.gridheight = 1;
         cons.gridwidth = 1;
-        cons.insets = new Insets(40, 20, 40, 20);
+        cons.insets = new Insets(10, 20, 10, 20);
         cons.anchor = GridBagConstraints.CENTER;
-        cons.fill = GridBagConstraints.HORIZONTAL;
+        cons.fill = GridBagConstraints.NONE;
         add(btnCancelar, cons);
 
     }
