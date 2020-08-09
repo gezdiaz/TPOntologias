@@ -6,6 +6,7 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -101,7 +102,7 @@ public class MainPanel extends JPanel {
         cons.gridheight = 1;
         cons.gridwidth = 1;
         cons.insets = new Insets(10, 20, 10, 20);
-        cons.anchor = GridBagConstraints.CENTER;
+        cons.anchor = GridBagConstraints.WEST;
         cons.fill = GridBagConstraints.NONE;
         add(btnAceptar, cons);
         btnAceptar.addActionListener(new ActionListener() {
@@ -142,6 +143,7 @@ public class MainPanel extends JPanel {
                 }
                 ArrayList<Alumno> ingresantes = (ArrayList<Alumno>) Main.getListaAlumnosBecadosIngresantes();
                 filtrado.addAll(ingresantes);
+                Collections.sort(filtrado);
                 MainPanel.this.ventana.setContentPane(new PanelResultado(MainPanel.this.ventana, filtrado));
                 MainPanel.this.ventana.revalidate();
                 MainPanel.this.ventana.repaint();

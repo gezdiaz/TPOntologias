@@ -1,4 +1,6 @@
-public class Alumno {
+import org.checkerframework.checker.nullness.qual.NonNull;
+
+public class Alumno implements Comparable{
 
     private int legajo, edad, totalMaterias, ultimasMaterias;
     private String nombre, carrera, condicion;
@@ -104,5 +106,22 @@ public class Alumno {
                 ", ponderacion=" + ponderacion +
                 ", promedio=" + promedio +
                 '}';
+    }
+
+    @Override
+    public int compareTo(@NonNull Object o) {
+        if(o instanceof Alumno) {
+            Alumno a = (Alumno) o;
+            if (this.getPonderacion() == a.getPonderacion()) {
+                return 0;
+            }
+            if (this.getPonderacion() > a.getPonderacion()) {
+                return -1;
+            }
+            if (this.getPonderacion() < a.getPonderacion()) {
+                return 1;
+            }
+        }
+        return 0;
     }
 }
