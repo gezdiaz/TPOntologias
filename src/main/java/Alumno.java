@@ -1,18 +1,19 @@
 public class Alumno {
 
     private int legajo, edad, totalMaterias, ultimasMaterias;
-    private String nombre, carrera;
+    private String nombre, carrera, condicion;
     private double ponderacion, promedio;
 
     public Alumno() {
         ultimasMaterias = 0;
     }
 
-    public Alumno(int legajo, int edad, String nombre, String carrera, double promedio, double ponderacion, int ultimasMaterias, int totalMaterias) {
+    public Alumno(int legajo, int edad, String nombre, String carrera, String condicion, double promedio, double ponderacion, int ultimasMaterias, int totalMaterias) {
         this.legajo = legajo;
         this.edad = edad;
         this.nombre = nombre;
         this.carrera = carrera;
+        this.condicion = condicion;
         this.promedio = promedio;
         this.ponderacion = ponderacion;
         this.totalMaterias = totalMaterias;
@@ -81,6 +82,14 @@ public class Alumno {
 
     public void setPromedio(double promedio) {
         this.promedio = promedio;
+    }
+
+    public String getCondicion() {
+        return condicion;
+    }
+
+    public void setCondicion(String condicion) {
+        this.condicion = condicion;
     }
 
     @Override

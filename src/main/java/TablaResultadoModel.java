@@ -5,7 +5,7 @@ import javax.swing.table.AbstractTableModel;
 public class TablaResultadoModel extends AbstractTableModel {
 
     ArrayList<Alumno> resultados;
-    private String[] columnas = {"Legajo", "Nombre y apellido", "Edad", "Carrera", "Promedio", "Ponderaci\u00f3n","Materias ultimo a\u00f1o","Total materias"};
+    private String[] columnas = {"Legajo", "Nombre y apellido", "Edad", "Carrera", "Condici\u00f3n", "Promedio", "Ponderaci\u00f3n","Materias ultimo a\u00f1o","Total materias"};
 
     public TablaResultadoModel(ArrayList<Alumno> resultados){
         this.resultados = resultados;
@@ -23,7 +23,7 @@ public class TablaResultadoModel extends AbstractTableModel {
     @Override
     public int getColumnCount() {
         //La cantidad de culumnas es fija, porque son los atributos de la clase.
-        return 8;
+        return 9;
     }
 
     @Override
@@ -39,13 +39,15 @@ public class TablaResultadoModel extends AbstractTableModel {
                 return a.getEdad();
             case 3://Carrera
                 return a.getCarrera();
-            case 4://Promedio
+            case 4://Carrera
+                return a.getCondicion();
+            case 5://Promedio
                 return a.getPromedio();
-            case 5://Ponderación
+            case 6://Ponderación
                 return a.getPonderacion();
-            case 6://Últimas materias
+            case 7://Últimas materias
                 return a.getUltimasMaterias();
-            case 7://Total materias
+            case 8://Total materias
                 return a.getTotalMaterias();
             default:
                 System.out.println("Esto no debería pasar");

@@ -93,7 +93,6 @@ public class MainPanel extends JPanel {
         cons.anchor = GridBagConstraints.CENTER;
         cons.fill = GridBagConstraints.NONE;
         txtPromedio.setPreferredSize(btnCancelar.getPreferredSize());
-        System.out.println("Prefered size de txtPromedio: "+txtPromedio.getPreferredSize().toString());
         txtPromedio.setText("5");
         add(txtPromedio, cons);
 
@@ -109,11 +108,11 @@ public class MainPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //TODO hacer la consulta
-                ArrayList<Alumno> resultados = new ArrayList<>();
-                for(int i=0; i<50; i++){
-                    Alumno a = new Alumno(23330+i, 20+i, "Alumno "+String.valueOf(i), "Sistemas", (50.0+2*i)/i, 20.65*(5.6/i)+i, i, 10+i);
-                    resultados.add(a);
-                }
+//                ArrayList<Alumno> regulares = new ArrayList<>();
+//                for(int i=0; i<50; i++){
+//                    Alumno a = new Alumno(23330+i, 20+i, "Alumno "+String.valueOf(i), "Sistemas", "Regular", (50.0+2*i)/i, 20.65*(5.6/i)+i, i, 10+i);
+//                    regulares.add(a);
+//                }
                 if(txtMaterias.getText().isEmpty()){
                     //Tiene que haber ingresado algo
                     System.out.println("No ingresó materias aprobadas");
@@ -134,13 +133,15 @@ public class MainPanel extends JPanel {
                     System.out.println("Valores ingresados: Materias: '"+txtMaterias.getText()+"' Promedio: '"+txtPromedio.getText()+"'");
                     return;
                 }
-//                ArrayList<Alumno> resultados = (ArrayList<Alumno>) Main.createConnection();
+                ArrayList<Alumno> regulares = (ArrayList<Alumno>) Main.getListaAlumnosBecadosRegulares();
                 ArrayList<Alumno> filtrado = new ArrayList<>();
-                for(Alumno a : resultados){
-                    if(a.getPromedio()>promedioMin && a.getUltimasMaterias()>cantMaterias){
+                for(Alumno a : regulares){
+                    if(a.getPromedio()>=promedioMin && a.getUltimasMaterias()>=cantMaterias){
                         filtrado.add(a);
                     }
                 }
+                ArrayList<Alumno> ingresantes = (ArrayList<Alumno>) Main.getListaAlumnosBecadosIngresantes();
+                filtrado.addAll(ingresantes);
                 MainPanel.this.ventana.setContentPane(new PanelResultado(MainPanel.this.ventana, filtrado));
                 MainPanel.this.ventana.revalidate();
                 MainPanel.this.ventana.repaint();
