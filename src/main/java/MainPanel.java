@@ -100,12 +100,39 @@ public class MainPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //TODO hacer la consulta
-                ArrayList<Alumno> resultadosPrueba = new ArrayList<>();
+                ArrayList<Alumno> resultados = new ArrayList<>();
                 for(int i=0; i<50; i++){
-                    Alumno a = new Alumno(23330+i, 20+i, "Alumno "+String.valueOf(i), "Sistemas", 20.65*(5.6/i)+i, 10+2*i, 20+3*i);
-                    resultadosPrueba.add(a);
+                    Alumno a = new Alumno(23330+i, 20+i, "Alumno "+String.valueOf(i), "Sistemas", (50.0+2*i)/i, 20.65*(5.6/i)+i, i, 10+i);
+                    resultados.add(a);
                 }
-                MainPanel.this.ventana.setContentPane(new PanelResultado(MainPanel.this.ventana, resultadosPrueba));
+                if(txtMaterias.getText().isEmpty()){
+                    //Tiene que haber ingresado algo
+                    System.out.println("No ingresó materias aprobadas");
+                    return;
+                }
+                if(txtPromedio.getText().isEmpty()){
+                    //Tiene que haber ingresado algo
+                    System.out.println("No ingresó promedio");
+                    return;
+                }
+                int cantMaterias;
+                double promedioMin;
+                try{
+                    cantMaterias = Integer.parseInt(txtMaterias.getText());
+                    promedioMin = Double.parseDouble(txtPromedio.getText());
+                }catch (Exception ex){
+                    //Ingresó algo incorrecto
+                    System.out.println("Valores ingresados: Materias: '"+txtMaterias.getText()+"' Promedio: '"+txtPromedio.getText()+"'");
+                    return;
+                }
+//                ArrayList<Alumno> resultados = (ArrayList<Alumno>) Main.createConnection();
+                ArrayList<Alumno> filtrado = new ArrayList<>();
+                for(Alumno a : resultados){
+                    if(a.getPromedio()>promedioMin && a.getUltimasMaterias()>cantMaterias){
+                        filtrado.add(a);
+                    }
+                }
+                MainPanel.this.ventana.setContentPane(new PanelResultado(MainPanel.this.ventana, filtrado));
                 MainPanel.this.ventana.revalidate();
                 MainPanel.this.ventana.repaint();
                 MainPanel.this.ventana.pack();

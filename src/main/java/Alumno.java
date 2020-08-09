@@ -2,17 +2,18 @@ public class Alumno {
 
     private int legajo, edad, totalMaterias, ultimasMaterias;
     private String nombre, carrera;
-    private double ponderacion;
+    private double ponderacion, promedio;
 
     public Alumno() {
         ultimasMaterias = 0;
     }
 
-    public Alumno(int legajo, int edad, String nombre, String carrera, double ponderacion, int totalMaterias, int ultimasMaterias) {
+    public Alumno(int legajo, int edad, String nombre, String carrera, double promedio, double ponderacion, int ultimasMaterias, int totalMaterias) {
         this.legajo = legajo;
         this.edad = edad;
         this.nombre = nombre;
         this.carrera = carrera;
+        this.promedio = promedio;
         this.ponderacion = ponderacion;
         this.totalMaterias = totalMaterias;
         this.ultimasMaterias = ultimasMaterias;
@@ -72,5 +73,27 @@ public class Alumno {
 
     public void setCarrera(String carrera) {
         this.carrera = carrera;
+    }
+
+    public double getPromedio() {
+        return promedio;
+    }
+
+    public void setPromedio(double promedio) {
+        this.promedio = promedio;
+    }
+
+    @Override
+    public String toString() {
+        return "Alumno{" +
+                "legajo=" + legajo +
+                ", edad=" + edad +
+                ", totalMaterias=" + totalMaterias +
+                ", ultimasMaterias=" + ultimasMaterias +
+                ", nombre='" + nombre + '\'' +
+                ", carrera='" + carrera + '\'' +
+                ", ponderacion=" + ponderacion +
+                ", promedio=" + promedio +
+                '}';
     }
 }

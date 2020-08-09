@@ -18,8 +18,11 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.swing.JFrame;
+import javax.xml.bind.annotation.XmlAttachmentRef;
 
 public class Main {
 
@@ -36,7 +39,7 @@ public class Main {
     }
 
     //Crea una conexion a la base de datos TPOntologias en el servidor localhost:5820
-    public static void createConnection() {
+    public static List<Alumno> createConnection() {
         try (final Connection aConn = ConnectionConfiguration.to("TPOntologias").server("http://localhost:5820")
                 .reasoning(true)
                 .credentials("admin", "admin")
@@ -67,7 +70,7 @@ public class Main {
                     .append("{")
                     .append(" ?a a TPADMR:Alumno.")
                     .append(" ?a TPADMR:aproboMateria ?mat.")
-                    .append(" ?a TPADMR:tienePromedioGeneral ?prom")
+                    .append(" ?a TPADMR:tienePromedioGeneral ?prom.")
                     .append(" ?a TPADMR:tieneNombre ?nom.")
                     .append(" ?a TPADMR:tieneLegajo ?leg.")
                     .append(" ?a TPADMR:tieneEdad ?edad.")
@@ -90,8 +93,13 @@ public class Main {
 
             List<Alumno> alumnos = new ArrayList<Alumno>();
             SelectQuery selectQuery = aConn.select(qStrBf.toString());
+            System.out.println("Query: "+qStrBf.toString());
+            System.out.println("Se ejecuta la query");
             SelectQueryResult selectQueryResult = selectQuery.execute();
+            System.out.println("Se termino de ejecutar la query");
+            Pattern pattern = Pattern.compile("\"(.*?)\"");
             while(selectQueryResult.hasNext()){
+                System.out.println("Inicio del While");
                 BindingSet bindingSet = selectQueryResult.next();
                 boolean bandera = false;
                 if(!alumnos.isEmpty()){
@@ -106,22 +114,32 @@ public class Main {
                 }
                 if(!bandera){
                     Alumno alumno = new Alumno();
-                    alumno.setLegajo(Integer.parseInt(bindingSet.get("leg").toString().substring(1, bindingSet.get("leg").toString().lastIndexOf("\""))));
-                    alumno.setNombre(bindingSet.get("nom").toString().substring(1,bindingSet.get("nom").toString().lastIndexOf("\"")));
-                    alumno.setEdad(Integer.parseInt(bindingSet.get("edad").toString().substring(1,bindingSet.get("edad").toString().lastIndexOf("\""))));
-                    alumno.setTotalMaterias(Integer.parseInt(bindingSet.get("cmat").toString().substring(1,bindingSet.get("cmat").toString().lastIndexOf("\""))));
+//                    alumno.setLegajo(Integer.parseInt(bindingSet.get("leg").toString().substring(1, bindingSet.get("leg").toString().lastIndexOf("\""))));
+//                    alumno.setNombre(bindingSet.get("nom").toString().substring(1,bindingSet.get("nom").toString().lastIndexOf("\"")));
+//                    alumno.setEdad(Integer.parseInt(bindingSet.get("edad").toString().substring(1,bindingSet.get("edad").toString().lastIndexOf("\""))));
+//                    alumno.setTotalMaterias(Integer.parseInt(bindingSet.get("cmat").toString().substring(1,bindingSet.get("cmat").toString().lastIndexOf("\""))));
+//                    alumno.setUltimasMaterias(alumno.getUltimasMaterias()+1);
+//                    alumno.setPromedio(Float.parseFloat(bindingSet.get("prom").toString().substring(1,bindingSet.get("prom").toString().lastIndexOf("\""))));
+//                    alumno.setPonderacion(Float.parseFloat(bindingSet.get("pond").toString().substring(1,bindingSet.get("pond").toString().lastIndexOf("\""))));
+//                    alumno.setCarrera(bindingSet.get("carr").toString().substring(bindingSet.get("carr").toString().indexOf("#")+1));
+                    alumno.setLegajo(Integer.parseInt(pattern.matcher(bindingSet.get("leg").toString()).group(1)));
+                    alumno.setNombre(pattern.matcher(bindingSet.get("nom").toString()).group(1));
+                    alumno.setEdad(Integer.parseInt(pattern.matcher(bindingSet.get("edad").toString()).group(1)));
+                    alumno.setTotalMaterias(Integer.parseInt(pattern.matcher(bindingSet.get("cmat").toString()).group(1)));
                     alumno.setUltimasMaterias(alumno.getUltimasMaterias()+1);
-                    alumno.setPromedio(Float.parseFloat(bindingSet.get("prom").toString().substring(1,bindingSet.get("prom").toString().lastIndexOf("\""))));
-                    alumno.setPonderacion(Float.parseFloat(bindingSet.get("pond").toString().substring(1,bindingSet.get("pond").toString().lastIndexOf("\""))));
-                    alumno.setCarrera(bindingSet.get("carr").toString().substring(bindingSet.get("carr").toString().indexOf("#")+1));
+                    alumno.setPromedio(Float.parseFloat(pattern.matcher(bindingSet.get("prom").toString()).group(1)));
+                    alumno.setPonderacion(Float.parseFloat(pattern.matcher(bindingSet.get("pond").toString()).group(1)));
+                    alumno.setCarrera(pattern.matcher(bindingSet.get("carr").toString()).group(1));
                     alumnos.add(alumno);
+                    System.out.println("Creado el alumno: "+alumno.toString());
                 }
 
             }
-
+            return alumnos;
 
         } catch (Exception e){
             e.printStackTrace();
+            return new ArrayList<>();
         }
 
     }
